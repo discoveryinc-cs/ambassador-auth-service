@@ -26,6 +26,12 @@ const express = require('express')
 const app = express()
 const addRequestId = require('express-request-id')()
 
+// Get authentication path from env, default to /extauth/backend/get-quote
+const authPath = process.env.AUTH_PATH || '/extauth/backend/get-quote'
+
+const port = process.env.PORT || 3000
+// const host = '0.0.0.0'
+
 // Set up authentication middleware
 const basicAuth = require('express-basic-auth')
 const authenticate = basicAuth({
@@ -40,16 +46,11 @@ app.use(addRequestId)
 // Add verbose logging of requests (see below)
 app.use(logRequests)
 
-// Get authentication path from env, default to /extauth/backend/get-quote
-let authPath = '/extauth/backend/get-quote'
-if ('AUTH_PATH' in process.env) {
-  authPath = process.env.AUTH_PATH
-}
 console.log(`setting authenticated path to: ${authPath}`)
 
 // Require authentication for authPath requests
 app.all(authPath.concat('*'), authenticate, function (req, res) {
-  var session = req.headers['x-qotm-session']
+  let session = req.headers['x-qotm-session']
 
   if (!session) {
     console.log(`creating x-qotm-session: ${req.id}`)
@@ -71,7 +72,7 @@ app.all('*', function (req, res) {
   }
 })
 
-app.listen(3000, function () {
+app.listen(port, function () {
   console.log('Subrequest auth server sample listening on port 3000')
 })
 
