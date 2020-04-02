@@ -63,8 +63,12 @@ app.all(authPath.concat('*'), authenticate, function (req, res) {
 
 // Everything else is okay without auth
 app.all('*', function (req, res) {
-  console.log(`Allowing request to ${req.path}`)
-  res.send(`OK (not ${authPath})`)
+  if (`${req.path}` === '/healthcheck') {
+    res.send('OK (ready check is always allowed)')
+  } else {
+    console.log(`Allowing request to ${req.path}`)
+    res.send(`OK (not ${authPath})`)
+  }
 })
 
 app.listen(3000, function () {
