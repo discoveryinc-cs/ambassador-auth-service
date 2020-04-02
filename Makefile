@@ -1,4 +1,26 @@
-# !!!! This doesn't really play nicely with travis-build.sh yet.
+SHELL=/bin/bash -o pipefail
+# SHELL = /bin/bash
+
+CURRENT_DIR = $$(pwd)
+
+# Подготовка Makefile
+# https://habr.com/ru/post/449910/#makefile_preparation
+
+UNAME := $(shell uname)
+BUILD_DATE := $(shell date +%Y%m%d-%H%M)
+
+ifeq (,$(wildcard .env))
+	# @echo "ERROR"
+	exit 1;
+else
+	include .env
+	export $(shell sed 's/=.*//' .env)
+	# export
+endif
+
+ifeq ($(DOCKER_REGISTRY),)
+	DOCKER_REGISTRY := "datawire"
+endif
 
 VERSION=$(shell python -c 'import json; print(json.load(open("package.json", "r"))["version"])')
 

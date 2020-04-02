@@ -29,7 +29,7 @@ const addRequestId = require('express-request-id')()
 // Set up authentication middleware
 const basicAuth = require('express-basic-auth')
 const authenticate = basicAuth({
-  'users': { 'username': 'password' },
+  'users': { 'username': process.env.AUTH_PASSWORD },
   'challenge': true,
   'realm': 'Ambassador Realm'
 })
@@ -41,7 +41,7 @@ app.use(addRequestId)
 app.use(logRequests)
 
 // Get authentication path from env, default to /extauth/backend/get-quote
-var authPath = '/extauth/backend/get-quote'
+let authPath = '/extauth/backend/get-quote'
 if ('AUTH_PATH' in process.env) {
   authPath = process.env.AUTH_PATH
 }
