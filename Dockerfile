@@ -27,5 +27,9 @@ EXPOSE 3000
 
 COPY --from=0 /app .
 COPY . .
+
+RUN mkdir -p /vault/secrets
+RUN mv /app/authkey.json /vault/secrets/
+
 CMD ["node", "server.js"]
 

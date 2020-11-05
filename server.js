@@ -32,10 +32,14 @@ const authPath = process.env.AUTH_PATH || '/extauth/backend/get-quote'
 const port = process.env.PORT || 3000
 // const host = '0.0.0.0'
 
+// Get username and password from json (written from vault)
+const authkeyconfig = require('/vault/secrets/authkey.json')
+console.log(`authkey from json: ${authkeyconfig.authkey}`)
+
 // Set up authentication middleware
 const basicAuth = require('express-basic-auth')
 const authenticate = basicAuth({
-  'users': { 'username': process.env.AUTH_PASSWORD },
+  'users': { 'auth' : authkeyconfig.authkey },
   'challenge': true,
   'realm': 'Ambassador Realm'
 })
