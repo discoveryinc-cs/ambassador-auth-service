@@ -1,5 +1,5 @@
 @Library(['jpl@master'])
-import com.scrippsnetworks.jpl.PipelineSupport
+import com.discovery.jpl.PipelineSupport
 
 String giturl = 'git@github.com:discoveryinc-cs/ambassador-auth-service.git'
 String application = 'ambassador-auth-service'
